@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMFB液滴路径规划</title>
+    <link rel="stylesheet" href="{% static 'mytool/css/common.css' %}">
+    <style>
+        #content{width: 100%; height: 500px;}
+        #content .content_img{width: 50%; height: 500px;text-align: center;}
+        #content .content_img .div_img{width: 95%; height: 300px; margin-left: auto; margin-right: auto; margin-top: 90px;}
+        #content .content_img p{font-size: 20px; margin-top: 20px;}
+
+        #footing{position: fixed; bottom: 0;}
+    </style>
+</head>
+<body>
+    <div id="head">
+        <div class="head_logo l">
+            <a href="#">
+                <img src="{% static 'mytool/images/sustech-logo-cn.png' %}" alt="南方科技大学" title="返回首页" width="250px" height="50px">
+            </a>
+        </div>
+        <ul class="head_menu r">
+            <li>
+                <a href="index.html">
+                    Home page
+                </a>
+            </li>
+            <li>
+                <a href="verification.html">
+                    Droplet path verification
+                </a>
+            </li>
+{#            <li>#}
+{#                <a href="generation.html">#}
+{#                    液滴路径生成#}
+{#                </a>#}
+{#            </li>#}
+        </ul>
+    </div>
+
+    <div id="content">
+        <div class="content_img l">
+            <div class="div_img">
+                <img src="../../static/mytool/images/DMFB.png" alt="DMFB结构" width="100%" height="100%">
+            </div>
+            <p>Digital microfluidic chip structure</p>
+        </div>
+        <div class="content_img l">
+            <div class="div_img">
+                <img src="../../static/mytool/images/routing.png" alt="DMFB路径规划" width="100%" height="100%">
+            </div>
+            <p>Droplet Routing</p>
+        </div>
+    </div>
+
+    <div id="footing">
+        <p class="l">
+            Digital microfluidic chip droplet routing 2021
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Droplet path verification</title>
+    <link rel="stylesheet" href="../../static/mytool/css/common.css">
+    <link rel="stylesheet" href="../../static/mytool/css/visual.css">
+    <style>
+        .content_center{text-align: center; margin-top: 20px;}
+        .btn{
+            width: 200px; 
+            height: 40px; 
+            padding: 6px 12px; 
+            font-size: 15px; 
+            text-align: center; 
+            border: 1px solid transparent;
+            border-radius: 5px; 
+            touch-action: manipulation; 
+            cursor: pointer;
+        }
+        body{background-color:turquoise;}
+
+    </style>
+</head>
+<body>
+    <div id="head">
+        <div class="head_logo l">
+            <a href="#">
+                <img src="../../static/mytool/images/sustech-logo-cn.png" alt="南方科技大学" title="Return Home" width="250px" height="50px">
+            </a>
+        </div>
+        <ul class="head_menu r">
+            <li>
+                <a href="index.html">
+                    Home page
+                </a>
+            </li>
+            <li>
+                <a href="verification.html">
+                    Droplet path verification
+                </a>
+            </li>
+{#            <li>#}
+{#                <a href="generation.html">#}
+{#                    液滴路径生成#}
+{#                </a>#}
+{#            </li>#}
+        </ul>
+    </div>
+
+    <div id="content">
+        <div id="content_path" class="content_center">
+            <textarea id="input_info" cols="180" rows="20" placeholder="Please enter the legal path of the droplet">{{ paths }}</textarea>
+        </div>
+        <div id="content_btn" class="content_center">
+            <button id="veri_btn" class="btn">Start verification</button>
+            <button id="clear_btn" class="btn">Clear</button>
+        </div>
+    </div>
+
+    <div id="visual">
+        <div id="left_menu" class="l">
+            <div id="play">
+                <div class="div_play">
+                    <p class="text_center title_style"> Autoplay </p>
+                    <div class="text_center">
+                        <button id="auto_play_btn" class="play_btn">Auto</button>
+                        <button id="stop_play_btn" class="play_btn">pause</button>
+                    </div>
+
+                    <div class="text_center" style="margin-top: 10px">
+                        <p>Moving rate </p>
+                        Fast <input id="move_rate" type="range" name="play_speed" step="100" min="100" max="500" value="300"> Slow
+                    </div>
+                </div>
+
+                <div class="div_play" style="height: 100px; margin-top: 10px">
+                    <p id="droplet_step" class="text_center title_style">step: <span> 0 </span></p>
+                    <div class="text_center">
+                        <p>Step progress bar</p>
+                        <input id="step_prog" type="range" name="time_step" step="1" min="0" max="50" value="0">
+                    </div>   
+                </div>
+
+                <div class="div_play" style="margin-top: 20px">
+                    <p class="text_center title_style"> Manual play </p>
+                    <div class="text_center">
+                        <button id="pre_step_btn" class="play_btn">Last step</button>
+                        <button id="next_step_btn" class="play_btn">Next step</button>
+                    </div>
+                    <div class="text_center">
+                        <button id="clear_log_btn" class="play_btn">Clear log</button>
+                    </div>
+     
+                </div>
+
+                <!-- <div id="setting">
+                    <input type="checkbox" value="路径模式"> 路径模式
+                </div> -->
+
+            </div>
+            <hr>
+            <div id="info">
+                <div class="div_info">
+                    <p class="title_style text_center">Chip information</p>
+                    <p class="text_center"></p>
+                    <p> Chip size: <span> 0 </span></p>
+                    <p> Blockage number: <span> 0 </span></p>
+                    <p class="title_style text_center">path information</p>
+                    <p class="text_center"></p>
+                    <p> Droplet number : <span> 0 </span></p>
+                    <p> Latest arrival time: <span> 0 </span></p>
+                    <p> Number of cell used: <span> 0 </span></p>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="route" class="l">
+            <div id="detail">
+                <div id="y_axis" class="l"></div>
+                <div id="route_visual" class="l">
+                    <div id="board" class="common_board">
+                        <!-- <div class="cell" style="left: 0; top: 0px;">
+                            <div class="unit">
+                                s<sub>1</sub>
+                            </div>
+                        </div>
+                        <div class="cell" style="left: 100px; top: 0px;">
+                            <div class="unit">
+                                
+                            </div>
+                        </div>
+                        <div class="cell" style="left: 200px; top: 0px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 300px; top: 0px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 400px; top: 0px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 500px; top: 0px;">
+                            <div class="unit"></div>
+                        </div>
+            
+                        <div class="cell" style="left: 0; top: 100px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 100px; top: 100px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 200px; top: 100px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 300px; top: 100px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 400px; top: 100px;">
+                            <div class="unit">
+                                <div class="unit">
+                                    t<sub>2</sub>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cell" style="left: 500px; top: 100px;">
+                            <div class="unit"></div>
+                        </div>
+            
+                        <div class="cell" style="left: 0; top: 200px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 100px; top: 200px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 200px; top: 200px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 300px; top: 200px;">
+                            <div class="blockage"></div>
+                        </div>
+                        <div class="cell" style="left: 400px; top: 200px;">
+                            <div class="blockage"></div>
+                        </div>
+                        <div class="cell" style="left: 500px; top: 200px;">
+                            <div class="unit"></div>
+                        </div>
+
+                        <div class="cell" style="left: 0; top: 300px;">
+                            <div class="unit">
+                                <div class="unit">
+                                    t<sub>1</sub>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cell" style="left: 100px; top: 300px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 200px; top: 300px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 300px; top: 300px;">
+                            <div class="blockage"></div>
+                        </div>
+                        <div class="cell" style="left: 400px; top: 300px;">
+                            <div class="blockage"></div>
+                        </div>
+                        <div class="cell" style="left: 500px; top: 300px;">
+                            <div class="unit"></div>
+                        </div>
+
+                        <div class="cell" style="left: 0; top: 400px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 100px; top: 400px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 200px; top: 400px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 300px; top: 400px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 400px; top: 400px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 500px; top: 400px;">
+                            <div class="unit">
+                                <div class="unit">
+                                    t<sub>3</sub>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cell" style="left: 0; top: 500px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 100px; top: 500px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 200px; top: 500px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 300px; top: 500px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 400px; top: 500px;">
+                            <div class="unit"></div>
+                        </div>
+                        <div class="cell" style="left: 500px; top: 500px;">
+                            <div class="unit"></div>
+                        </div> -->
+            
+                    </div>
+
+                    <div id="movement" class="common_board">
+                        <!-- <div id="droplet1" class="droplet" style="left: 0; top: 0px;">
+                            <div class="center_vh">d<sub>1</sub></div>
+                        </div>
+                        <div class="droplet" style="left: 200px; top: 0px; background-color: yellow;">
+                            <div class="center_vh">d<sub>2</sub></div>
+                        </div>
+                        <div class="droplet" style="left: 200px; top: 500px; background-color: violet;">
+                            <div class="center_vh">d<sub>3</sub></div>
+                        </div> -->
+                    </div>
+                    
+                    <div id="trace" class="common_board">
+
+                    </div>
+                </div>
+                <div id="x_axis" class="l">
+
+                </div>
+            </div>
+        </div>
+
+        <div id="log" class="l">
+            <p class="text_center title_style"> Droplet movement log </p>
+            <div id="logs" class="log_info">
+                <!-- <br>
+                <p>#At<span>10</span>step</p>
+                <p>=>droplet:d<sub>1</sub>(<span>5</span>, <span>2</span>), d<sub>3</sub>(<span>5</span>, <span>4</span>)</p>
+                <p>==>violate<span>dynamic constraints</span></p>
+
+                <br>
+                <p>#At<span>11</span>step</p>
+                <p>=>droplet:d<sub>1</sub>(<span>5</span>, <span>2</span>), d<sub>3</sub>(<span>5</span>, <span>4</span>)</p>
+                <p>==>violate<span>dynamic constraints</span></p>
+
+                <br>
+                <p>#At<span>12</span>step</p>
+                <p>=>droplet:d<sub>1</sub>(<span>5</span>, <span>2</span>), d<sub>3</sub>(<span>5</span>, <span>4</span>)</p>
+                <p>==>violate<span>dynamic constraints</span></p>
+
+                <br>
+                <p>#At<span>13</span>step</p>
+                <p>=>droplet:d<sub>1</sub>(<span>5</span>, <span>2</span>), d<sub>3</sub>(<span>5</span>, <span>4</span>)</p>
+                <p>==>violate<span>dynamic constraints</span></p>
+
+                <br>
+                <p>#At<span>14</span>step</p>
+                <p>=>droplet:d<sub>1</sub>(<span>5</span>, <span>2</span>), d<sub>3</sub>(<span>5</span>, <span>4</span>)</p>
+                <p>==>violate<span>dynamic constraints</span></p>
+
+                <br>
+                <p>#At<span>15</span>step</p>
+                <p>=>droplet:d<sub>1</sub>(<span>5</span>, <span>2</span>), droplet d<sub>3</sub>(<span>5</span>, <span>4</span>)</p>
+                <p>==>violate<span>dynamic constraints</span></p>
+
+                <br>
+                <p>#At<span>16</span>step</p>
+                <p>=>droplet:d<sub>1</sub>(<span>5</span>, <span>2</span>), d<sub>3</sub>(<span>5</span>, <span>4</span>)</p>
+                <p>==>violate<span>dynamic constraints</span></p>
+
+                <br>
+                <p>#At<span>17</span>step</p>
+                <p>=>droplet:d<sub>1</sub>(<span>5</span>, <span>2</span>), d<sub>3</sub>(<span>5</span>, <span>4</span>)</p>
+                <p>==>violate<span>dynamic constraints</span></p> -->
+            </div>
+        </div>
+    </div>
+
+    <div id="footing">
+        <p class="l">
+            Digital microfluidic chip droplet routing 2021
+        </p>
+    </div>
+
+</body>
+</html>
+
+<script src="../../static/mytool/js/jquery-3.4.1.min.js"></script>
+<script src="../../static/mytool/js/verify.js"></script>
+<script src="../../static/mytool/js/helper.js"></script>
+<script>
+    $(function(){
+        // 全局变量
+        var paths;
+        var time_cell;
+        var cell_length;
+        var droplets;
+        var up_right_x;
+        var up_right_y;
+
+        var droplets_move;
+        var interfere_areas = [];
+
+        $('#veri_btn').on('click', function(){
+            // $('#board').empty(); // 先清空内部元素
+            // $("#movement").empty();
+            // $("#trace").empty();
+            $(".common_board").empty();
+            $("#logs").empty();
+            
+            $('#droplet_step > span').text(0);
+            // $("#step_prog").attr('value', 0);
+            $("#step_prog").val(0);
+            interfere_areas = [];
+
+            var input_info = $('#input_info').val();
+
+            // 芯片尺寸
+            var visual_width = $('#route_visual').width();
+            var visual_height = $('#route_visual').height();
+            
+            var dmfb_size = get_dmfb_size(input_info);
+            if (dmfb_size != null){
+                // console.log(dmfb_size.down_left._x + ' ' + dmfb_size.up_right._x);
+                up_right_x = dmfb_size.up_right._x;
+                up_right_y = dmfb_size.up_right._y;
+                var num = up_right_x > up_right_y ? up_right_x : up_right_y;
+                cell_length = Math.floor(visual_width/num);
+                console.log("一个网格单元的长度是:" + cell_length);
+                var board_width = up_right_x * cell_length;
+                var board_height = up_right_y * cell_length;
+                console.log("dmfb芯片的宽高分别是:" + board_width + "," + board_height);
+                // 设定board宽高
+                // $('#board').css({
+                //     "width": board_width + "px",
+                //     "height": board_height + "px"
+                // })
+                $('.common_board').css({
+                    "width": board_width + "px",
+                    "height": board_height + "px"
+                });
+                // 添加单元
+                for (var i = 0; i < up_right_x; i++){
+                    for (var j = 0; j < up_right_y; j++){
+                        var cell = "<div class='cell' style='left:" + j * cell_length + "px; top:"+ i * cell_length +"px;'><div class='unit'></div></div>";
+                        $('#board').append(cell);
+                        // $('.cell').css({
+                        //     "width": cell_length + "px",
+                        //     "height": cell_length + "px"
+                        // })
+                    }
+                }  
+                $('.cell').css({
+                    "width": cell_length + "px",
+                    "height": cell_length + "px"
+                }) 
+            }else{
+                console.log("输入信息缺少芯片尺寸信息，请输入芯片左下角坐标以及右上角坐标！");    
+            }  
+            // 芯片障碍
+            const blockages = get_dmfb_blockages(input_info);
+            console.log(blockages);
+            // console.log($(".cell:eq(27)"));
+            for (i in blockages){  
+                var index = get_cell_index(up_right_x, up_right_y, blockages[i]);
+                $(".cell:eq("+ index +") > div").removeClass("unit").addClass("blockage");
+            }
+
+            // 液滴信息
+            droplets = get_droplets_source_target(input_info);
+
+            // $('#movement').css({
+            //         "width": board_width + "px",
+            //         "height": board_height + "px"
+            // })
+            if (droplets.length !== 0){
+                console.log(droplets);
+                for (i in droplets){
+                    // 添加液滴起点和终点
+                    var source_index = get_cell_index(up_right_x, up_right_y, droplets[i]._source);
+                    var target_index = get_cell_index(up_right_x, up_right_y, droplets[i]._target);
+
+                    $(".cell:eq("+ source_index +") > div").append("s<sub>" + droplets[i]._id + "</sub>");
+                    $(".cell:eq("+ target_index +") > div").append("t<sub>" + droplets[i]._id + "</sub>");
+                    // 添加液滴
+                    var source_x_y = change_x_y(up_right_x, up_right_y, droplets[i]._source);
+                    droplet_text = "<div class='droplet' style='left:" + source_x_y[1] * cell_length + "px; top:" + source_x_y[0] * cell_length + "px; background-color:" + droplet_colors[droplets[i]._id % droplet_colors.length] + ";'>" + 
+                        "<div class='center_vh'> d<sub>"+ droplets[i]._id + "</sub></div>"+
+                    "</div>";
+                    $("#movement").append(droplet_text);
+                    // $('.droplet').css({
+                    //         "width": cell_length + "px",
+                    //         "height": cell_length + "px"
+                    // })
+                }
+                $('.droplet').css({
+                    "width": cell_length + "px",
+                    "height": cell_length + "px"
+                });
+
+                // 事件只有在dom元素生成后才能够绑定
+                $('.droplet').on("mouseenter", function(){
+                    // console.log("鼠标进入了！！");
+                    var id = $('.droplet').index(this);
+                    // console.log(paths[id]);
+                    
+                    var dinfo = "<p>Crurrent droplet d<sub>" + (id + 1) + "</sub> position is (" + ($(this).position().left / cell_length + 1) + ","+ (up_right_y - $(this).position().top / cell_length) + ")</p>";
+                    $("#x_axis").append(dinfo);
+
+                    // console.log(paths);
+                    show_droplet_trace(up_right_x, up_right_y, cell_length, paths[id]);
+                    $('.droplet:eq(' + id + ') > div').hide();
+                });
+
+                $('.droplet').on("mouseleave", function(){
+                    $("#x_axis").empty();
+                    $("#trace").empty();
+                    $('.droplet').css('opacity', 1.0);
+                    var id = $('.droplet').index(this);
+                    $('.droplet:eq(' + id + ') > div').show();
+                    // console.log("鼠标离开了！！");
+                });
+                
+            }else{
+                console.log("输入信息缺少液滴信息，请输入液滴的id、起点和终点！");
+            }
+            // 液滴路径信息
+            paths = get_droplet_path(input_info);
+            if(paths.length != 0){
+                console.log(paths);
+                
+            }else{
+                console.log("输入信息缺少液滴路径信息，请输入液滴的id和路径！");
+            }
+
+            // 统计信息
+            $("#info > div > p:eq(2) > span").text(up_right_x + "x" + up_right_y);
+            $("#info > div > p:eq(3) > span").text(blockages.length);
+            $("#info > div > p:eq(6) > span").text(droplets.length);
+            time_cell = get_paths_info(up_right_x, up_right_y, paths);
+            $("#info > div > p:eq(7) > span").text(time_cell[0]);
+            $("#info > div > p:eq(8) > span").text(time_cell[1]);
+            $("#step_prog").attr('max', time_cell[0]);
+        });
+
+        $('#clear_btn').on('click', function(){
+            $('#input_info').val("");
+            {#var c = new Cell(5, 5);#}
+            {#console.log(get_interfere_area(up_right_x, up_right_y, c));#}
+            
+        });
+
+        $("#next_step_btn").on('click', function(){
+            const max_time_step = time_cell[0];
+            const cur_step = parseInt($('#droplet_step > span').text());
+            hide_interfere_area(up_right_x, up_right_y, interfere_areas);
+
+            if (cur_step + 1 <= max_time_step){
+                console.log("current step：" + cur_step);
+
+                const $droplets = $("#movement").children();
+
+                const next_steps = get_droplet_pre_next_step(up_right_x, up_right_y, cell_length, paths, cur_step + 1);
+
+                $droplets.each(function(index, element){
+                    $(element).animate({
+                        left: next_steps[index][0] + "px",
+                        top: next_steps[index][1] + "px",
+                    }, 100 , "linear");
+                });
+                
+                $('#droplet_step > span').text(cur_step + 1);
+                // $("#step_prog").attr('value', cur_step + 1);
+                $("#step_prog").val(cur_step + 1);
+
+                const interfere_info = check_droplets_interfere(droplets, paths, cur_step + 1, max_time_step);
+                if (interfere_info.length > 0){
+                    console.log(interfere_info);
+                    var $logs = $("#logs");
+                    add_logs($logs, cur_step + 1, interfere_info);
+                    interfere_areas = get_all_cur_interfere_area(up_right_x, up_right_y, interfere_info);
+                    console.log(interfere_areas);
+                    show_interfere_area(up_right_x, up_right_y, interfere_areas);
+                }
+                
+            }else{
+                console.log("所有液滴都已经到达终点");   
+            }   
+
+            if (cur_step === max_time_step){
+                const interfere_info = check_droplets_interfere(droplets, paths, cur_step, max_time_step);
+                if (interfere_info.length > 0){
+                    console.log(interfere_info);
+                    var $logs = $("#logs");
+                    add_logs($logs, cur_step, interfere_info);
+                    interfere_areas = get_all_cur_interfere_area(up_right_x, up_right_y, interfere_info);
+                    show_interfere_area(up_right_x, up_right_y, interfere_areas);
+                }
+            }
+        });
+
+
+        $("#pre_step_btn").on('click', function(){
+            hide_interfere_area(up_right_x, up_right_y, interfere_areas);
+            var cur_step = parseInt($('#droplet_step > span').text());
+            if (cur_step - 1 >= 0){
+                console.log("Current step：" + cur_step);
+                
+                var $droplets = $("#movement").children();
+                // var next_steps = []
+                // for (i in paths){
+                //     var path = paths[i];
+                //     var cur_cell = null;
+                //     if (cur_step - 1 >= path.length){
+                //         cur_cell = path[path.length - 1];
+                //     }else{
+                //         cur_cell = path[cur_step - 1];
+                //     }
+                //     var next_x_y = change_x_y(up_right_x, up_right_y, cur_cell);
+                //     next_steps.push([next_x_y[1] * cell_length, next_x_y[0] * cell_length]); // left, top
+
+                // }
+                var next_steps = get_droplet_pre_next_step(up_right_x, up_right_y, cell_length, paths, cur_step - 1);
+                
+                $droplets.each(function(index, element){
+                    $(element).animate({
+                        left: next_steps[index][0] + "px",
+                        top: next_steps[index][1] + "px",
+                    }, 100 , "linear");
+                });
+                
+                $('#droplet_step > span').text(cur_step - 1);
+                // $("#step_prog").attr('value', cur_step - 1);
+                $("#step_prog").val(cur_step - 1);
+            }else{
+                console.log("所有液滴都已经回到起点");
+                
+            }
+        });
+
+        $("#step_prog").on('input propertychange', function(){
+            console.log("进度条改变，当前属性值为:" + $(this).val());
+            var step = $(this).val();
+            var next_steps = get_droplet_pre_next_step(up_right_x, up_right_y, cell_length, paths, step);
+            var $droplets = $("#movement").children();
+            $droplets.each(function(index, element){
+                $(element).animate({
+                    left: next_steps[index][0] + "px",
+                    top: next_steps[index][1] + "px",
+                }, 100 , "linear");
+            });
+            
+            $('#droplet_step > span').text(step);
+        });
+
+        $("#move_rate").on('change', function(){
+            console.log("进度条改变，当前属性值为:" + $(this).val());
+        });
+
+        $("#auto_play_btn").on("click", function(){
+            var max_time_step = time_cell[0];
+            var cur_step = parseInt($('#droplet_step > span').text()) + 1;
+            // for(; step <= max_time_step; step++){
+            //     var $droplets = $("#movement").children();
+            //     var next_steps = get_droplet_pre_next_step(up_right_x, up_right_y, cell_length, paths, step);
+                
+            //     $droplets.each(function(index, element){
+            //         $(element).animate({
+            //             left: next_steps[index][0] + "px",
+            //             top: next_steps[index][1] + "px",
+            //         }, parseInt($("#move_rate").val()) , "linear");
+            //     })
+            //     $('#droplet_step > span').text(step);
+            //     $("#step_prog").attr('value', step);  
+                
+            //     // setTimeout(() => {
+            //     //     $('#droplet_step > span').text(step);
+            //     //     $("#step_prog").attr('value', step); 
+            //     // }, parseInt($("#move_rate").val()));
+            //     console.log("当前步长：" + step + " : " + $('#droplet_step > span').text());
+                
+            // }
+
+            droplets_move = setInterval(frame, parseInt($("#move_rate").val()));
+            function frame() {
+                if (cur_step === max_time_step + 1) {
+                    clearInterval(droplets_move);
+                } else {
+                    $('#droplet_step > span').text(cur_step);
+                    // $("#step_prog").attr('value', step);  
+                    $("#step_prog").val(cur_step);
+                    // console.log($("#step_prog").val());
+                
+                    var next_steps = get_droplet_pre_next_step(up_right_x, up_right_y, cell_length, paths, cur_step);
+                    var $droplets = $("#movement").children();
+                    $droplets.each(function(index, element){
+                        $(element).animate({
+                            left: next_steps[index][0] + "px",
+                            top: next_steps[index][1] + "px",
+                        }, parseInt($("#move_rate").val()) , "linear");
+                    });
+
+                    hide_interfere_area(up_right_x, up_right_y, interfere_areas);
+
+                    if (cur_step <= max_time_step){
+                        var interfere_info = check_droplets_interfere(droplets, paths, cur_step, max_time_step);
+                        if (interfere_info.length > 0){
+                            console.log(interfere_info);
+                            var $logs = $("#logs");
+                            add_logs($logs, cur_step, interfere_info);
+
+                            interfere_areas = get_all_cur_interfere_area(up_right_x, up_right_y, interfere_info);
+                            console.log(interfere_areas);                           
+                            show_interfere_area(up_right_x, up_right_y, interfere_areas);
+                        }
+                    }
+                    cur_step++; 
+                }
+            }
+        });
+
+        $("#stop_play_btn").on("click", function(){
+            var $droplets = $("#movement").children();
+            $droplets.each(function(index, element){
+                $(element).stop(true, true);
+            });
+            clearInterval(droplets_move);
+            // $("#movement").stop(true, true);
+        });
+
+        $("#clear_log_btn").on("click", function(){
+            $("#logs").empty();
+        })
+    })
+</script>

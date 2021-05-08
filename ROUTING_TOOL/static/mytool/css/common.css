@@ -1,0 +1,19 @@
+*{ margin: 0; padding: 0;}
+ul, ol{ list-style: none;}
+img{ display: block;}
+a{ text-decoration: none; color: azure;}
+h1, h2, h3{ font-size: 16px;}
+
+.l{ float: left;}
+.r{ float: right;}
+.clear:after{ content: ""; display: block; clear: both;}
+
+.title_style{font-size: 20px;}
+
+#head{ height: 70px; background-color: #2bb7b3;}
+#head .head_logo{ width: 250px; height: 50px; margin-top: 10px; margin-left: 10px;} 
+#head .head_menu{ font-size: 20px; line-height: 70px;}
+#head .head_menu li{ float: left; margin-right: 80px;}
+
+#footing{width: 100%; height: 50px; background-color: #2bb7b3; margin-bottom: 0;}
+#footing p{ height: 50px; line-height: 50px; font-size: 15px; color: azure; margin-left: 50px;}
