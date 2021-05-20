@@ -4,6 +4,7 @@ It is developed based on the python language and django framework, so to run it 
 
 ##### how to use?
 Step 1:
+
 1.Use pycharm run this project.
 
 2.Use termianl: Go to the project folder and input:
