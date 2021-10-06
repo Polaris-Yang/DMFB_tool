@@ -15,6 +15,7 @@ from TargetRouter import TargetRouter
 from Utils import *
 import arguments
 
+
 class SingleObjectiveAlgorithm:
     def __init__(self, problem, pop_size=50, offspring_size=50, mutate_prob=0.5,
                  selector=None,
@@ -34,7 +35,8 @@ class SingleObjectiveAlgorithm:
         self.fittest_in_each_gen = []
         self.feasible_num = []
         self.final_result = []
-        self.avg_fittest_each_gen=[]
+        self.avg_fittest_each_gen = []
+
     def evaluate_all(self, solutions):
         for solution in solutions:
             solution.objectives.append(self.problem.get_time_steps(solution.variables))
@@ -78,10 +80,12 @@ class EliteGeneticAlgorithm(SingleObjectiveAlgorithm):
     """
     该算法每次迭代保留一个精英
     """
+
     def __init__(self, problem, pop_size=50, offspring_size=50, mutate_prob=0.5,
                  selector=None,
                  comparator=None):
-        super(EliteGeneticAlgorithm, self).__init__(problem, pop_size, offspring_size, mutate_prob, selector, comparator)
+        super(EliteGeneticAlgorithm, self).__init__(problem, pop_size, offspring_size, mutate_prob, selector,
+                                                    comparator)
 
     def initialize(self):
         super(EliteGeneticAlgorithm, self).initialize()
@@ -124,12 +128,6 @@ class EliteGeneticAlgorithm(SingleObjectiveAlgorithm):
                 self.iterate()
                 self.final_result = self.population
             self.fittest_in_each_gen.append(self.fittest.objectives[0])
-            # get avge fitnest value for each population
-            # avge=0
-            # for i in self.population:
-            #     avge+=i.objectives[0]
-            # self.avg_fittest_each_gen.append(avge//len(self.population))
-            # get feasible num for population
             num = 0
             for pop in self.population:
                 if pop.objectives[0] != MAX_VALUE:
@@ -138,39 +136,41 @@ class EliteGeneticAlgorithm(SingleObjectiveAlgorithm):
             gen += 1
         return self.fittest_in_each_gen, self.feasible_num
 
+
 def parameters_set():
-    args=arguments.get_arguments()
-    test_case=list(args.testcase.split('_'))
-    if (test_case[0]=='test'):
-        path  = test[test_case[1]][int(test_case[2])-1]
-        job_type= TEST_ASSAY
-    elif(test_case[0=='minsik']):
-        path = MINSIK[int(test_case[1])-1]
+    args = arguments.get_arguments()
+    test_case = list(args.testcase.split('_'))
+    if (test_case[0] == 'test'):
+        path = test[test_case[1]][int(test_case[2]) - 1]
+        job_type = TEST_ASSAY
+    elif (test_case[0 == 'minsik']):
+        path = MINSIK[int(test_case[1]) - 1]
         job_type = MINSIK_ASSAY
     else:
         raise Exception("Invalid test case!", args.testcase)
     PATH = os.path.abspath(os.path.join(os.path.dirname("__file__"), os.path.pardir)) + '/' + path
     assay = Assay(PATH, job_type)
     assay.read_assay()
-    problem = RoutingProblem(assay, nobjs=1)
+    problem = RoutingProblem(assay, nobjs=1, alpha=args.alpha, beta=args.beta, gamma=args.gamma)
     generation = args.ng
     max_exe_time = args.maxtimes
     algorithm = EliteGeneticAlgorithm(problem, args.ps, args.ps, args.pm)
     save_file = algorithm.save_name(generation)
-    return algorithm,save_file,assay,max_exe_time,args.ng
+    return algorithm, save_file, assay, max_exe_time, args.ng, args
 
-def runAlgotithm(algorithm,save_file,assay,max_exe_time,max_gen):
+
+def runAlgotithm(algorithm, save_file, assay, max_exe_time, max_gen):
     with open(save_file, 'w') as file:
         best_results = []
         best_orders = []
-        Evo_traces_fit=[]
-        Evo_traces_feasible=[]
-        total_start_time=time.time()
-        exe_time=1
+        Evo_traces_fit = []
+        Evo_traces_feasible = []
+        total_start_time = time.time()
+        exe_time = 1
         while exe_time <= max_exe_time:
             print(assay.assay_name + " 正在执行第 %s 次" % exe_time)
             start_time = time.time()
-            fit,feasible =algorithm.run(max_gen)
+            fit, feasible = algorithm.run(max_gen)
             Evo_traces_feasible.append(feasible)
             Evo_traces_fit.append(fit)
             end_time = time.time()
@@ -178,22 +178,21 @@ def runAlgotithm(algorithm,save_file,assay,max_exe_time,max_gen):
             exe_time += 1
             best_results.append(algorithm.fittest_in_each_gen[-1])
             best_orders.append(algorithm.fittest)
-        total_end_time=time.time()
-        total_cost_time=total_end_time-total_start_time
-        average_time_run_onece=total_cost_time/max_exe_time
+        total_end_time = time.time()
+        total_cost_time = total_end_time - total_start_time
+        average_time_run_onece = total_cost_time / max_exe_time
         file.write('程序执行' + str(max_exe_time) + '之后的结果如下：\n')
         file.write(','.join(list(map(str, best_results))) + '\n')
         file.write('最好的结果为: ' + str(best_orders[np.argmin(best_results)]) + '\n')
-        file.write('平均值为: ' + str(np.mean(best_results)) + ', 标准差为: ' + str(np.std(best_results))+ '\n')
-        file.write('total_run_time： '+ str(total_cost_time) + 's'+', avg_rumtime： ' + str(average_time_run_onece)+ 's'+ '\n')
+        file.write('平均值为: ' + str(np.mean(best_results)) + ', 标准差为: ' + str(np.std(best_results)) + '\n')
+        file.write('total_run_time： ' + str(total_cost_time) + 's' + ', avg_rumtime： ' + str(
+            average_time_run_onece) + 's' + '\n')
     return best_results, [i.variables for i in best_orders], Evo_traces_fit, Evo_traces_feasible
 
-def print_routing_path(assay,order):
-    router = TargetRouter(assay.board_size, assay.board_size, assay.blockages, assay.droplets, assay)
+
+def print_routing_path(assay, order,args):
+    router = TargetRouter(assay.board_size, assay.board_size, assay.blockages, assay.droplets, assay,args.alpha,args.beta, args.gamma)
     router.router_specific_inits()
-    # order=str(best_orders[np.argmin(best_results)])
-    # order=order.split('|')[0].split('[')[1].split(',')
-    # order=list(map(int,order))
     order_droplets = router.assign_priority(order)
     print_droplets_order(order_droplets)
     print("////////////////////////////////////Begin 2D Routing///////////////////////////////////")
@@ -208,22 +207,16 @@ def print_routing_path(assay,order):
         time_step, used_cell = router.get_time_steps_and_used_cell_num(sub_routes)
         print("Time steps are " + str(time_step) + "; The number of used cells is " + str(used_cell))
     else:
-        print('This droplet order cannot find all routes')  
+        print('This droplet order cannot find all routes')
 
-        
+
 if __name__ == '__main__':
-    alg,savefunc,assay,max_exe_time,max_gen = parameters_set()
-    best_results, best_orders,evo_trace_fit,evo_trace_feasible=runAlgotithm(alg,savefunc,assay,max_exe_time,max_gen)
-    best_order=best_orders[np.argmin(best_results)]
-    print_routing_path(assay,best_order)
-    evo_trace_fit=np.array(evo_trace_fit)
+    alg, savefunc, assay, max_exe_time, max_gen, args = parameters_set()
+    best_results, best_orders, evo_trace_fit, evo_trace_feasible \
+    = runAlgotithm(alg, savefunc, assay, max_exe_time, max_gen)
+    best_order = best_orders[np.argmin(best_results)]
+    print_routing_path(assay, best_order,args)
+    evo_trace_fit = np.array(evo_trace_fit)
     evo_trace_feasible = np.array(evo_trace_feasible)
-    np.save(assay.assay_name+'_evo_trace_feasible',evo_trace_feasible)
-    np.save(assay.assay_name+'_evo_trace_fit',evo_trace_fit)
-
-
-
-
-
-
-
+    np.save(assay.assay_name + '_evo_trace_feasible', evo_trace_feasible)
+    np.save(assay.assay_name + '_evo_trace_fit', evo_trace_fit)

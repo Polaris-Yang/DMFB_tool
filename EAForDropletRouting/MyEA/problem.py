@@ -1,10 +1,10 @@
 import sys
+
 sys.path.append('../')
 
 import random
 import copy
 from TargetRouter import TargetRouter
-
 
 MAX_VALUE = 10000
 
@@ -18,14 +18,18 @@ class Solution:
         self.evaluated = False
 
     def __str__(self):
-        return "Solution[" + ",".join(list(map(str, self.variables))) + "|" + ",".join(list(map(str, self.objectives))) + "]"
+        return "Solution[" + ",".join(list(map(str, self.variables))) + "|" + ",".join(
+            list(map(str, self.objectives))) + "]"
 
 
 class RoutingProblem:
-    def __init__(self, assay, nobjs=1, nconstrs=0):
+    def __init__(self, assay, nobjs=1, nconstrs=0, alpha=4, beta=2, gamma=1) -> object:
         self.assay = assay
         self.nobjs = nobjs
         self.nconstrs = nconstrs
+        self.alpha = alpha
+        self.beta = beta
+        self.gamma = gamma
 
     def generate_individual(self):
         return generate_permutation(range(1, self.assay.droplet_num + 1))
@@ -37,7 +41,7 @@ class RoutingProblem:
         :return:
         """
         router = TargetRouter(self.assay.board_size, self.assay.board_size, self.assay.blockages,
-                              self.assay.droplets, self.assay)
+                              self.assay.droplets, self.assay, self.alpha, self.beta, self.gamma)
         router.router_specific_inits()
 
         order_droplets = router.assign_priority(order)
@@ -92,13 +96,3 @@ def droplet_routing_problem(order, assay):
     else:
         return [MAX_VALUE, MAX_VALUE]
         # return [-1, -1]
-
-
-
-
-
-
-
-
-
-
