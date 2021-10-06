@@ -20,7 +20,16 @@ python manage.py runserver
 Step 2:
 Then open  Browser  to input the address : http://127.0.0.1:8000/index.html.
 
+#### The  EA algorithm for droplet routing
 
+**how to use?**
+
+```
+cd .\EAForDropletRouting\MyEA
+python GA.py
+```
+
+Once you run the code, it will according to the default setting. You can add some parameters like "--ng=50" , you can find detailed parameter describe in **\EAForDropletRouting\arguments.py**.
 
 ##### Other things
 
