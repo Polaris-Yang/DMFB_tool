@@ -1,0 +1,14 @@
+grid 21 21
+
+blockages 10 5 13 2
+blockages 17 10 20 7
+blockages 10 14 12 12
+blockages 6 14 8 12
+blockages 2 8 4 6
+blockages 2 12 4 10
+
+net 1 5 3 10 9
+net 2 11 8 14 8
+net 3 13 6 21 11
+WAT 21 11
+net 4 8 21 8 11

@@ -1,0 +1,17 @@
+sub_1 18
+sub_2 17
+sub_3 18
+sub_4 5
+sub_5 10
+sub_6 14
+sub_7 10
+sub_8 9
+sub_9 10
+sub_10 9
+sub_11 10
+max_T 18
+total_T 130
+average_T 11.818181818181818
+
+
+cell used 176

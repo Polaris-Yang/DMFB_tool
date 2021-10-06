@@ -1,0 +1,6 @@
+grid 13 13
+
+blockages 6 6 8 4
+
+net 1 8 3 13 7
+WAT 13 7

@@ -1,0 +1,12 @@
+#subproblem 40
+grid 21 21 100
+block 1 10 4 13
+block 10 11 13 14
+block 9 1 11 3
+block 9 6 11 8
+block 13 1 15 3
+block 6 10 8 12
+block 15 6 17 8
+nets 2
+net 0 8 7 0 14 13 12
+net 1 13 20 0 16 15 8

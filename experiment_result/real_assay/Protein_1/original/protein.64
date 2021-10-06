@@ -1,0 +1,5 @@
+#subproblem 64
+grid 21 21 100
+nets 1
+net 0 4 11 0 20 10 17
+WAT 20 10

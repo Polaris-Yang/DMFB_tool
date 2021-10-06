@@ -1,0 +1,18 @@
+#subproblem 37
+grid 13 13 100
+block 4 1 7 4
+block 6 8 8 10
+block 1 6 3 8
+block 3 6 5 8
+block 4 8 6 10
+nets 6
+net 0 8 7 0 10 5 4
+net 1 4 12 0 8 5 11
+net 2 9 12 0 5 5 11
+net 3 2 0 0 3 0 1
+#redundant point!
+block 0 8 1 10
+newnets 5
+#net 4 0 9 0 0 9 0
+net 4 1 12 0 12 6 17
+WAT 12 6

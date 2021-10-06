@@ -1,0 +1,28 @@
+grid 16 16 1000
+blk target = 12.8
+#0
+block 1 2 3 8
+#1
+block 5 2 6 7
+#2
+block 12 1 14 3
+#3
+block 13 10 15 15
+#4
+block 11 7 14 8
+#5
+block 2 11 4 15
+#6
+block 8 4 11 5
+#7
+block 6 9 7 10
+blk real = 95
+nets 7
+net 0 4 3 0 10 12 15
+net 1 4 5 0 0 0 9
+net 2 4 1 0 4 7 6
+net 3 4 8 0 15 0 19
+net 4 6 0 0 15 9 18
+net 5 0 15 0 5 15 5
+net 6 7 15 0 8 3 13
+

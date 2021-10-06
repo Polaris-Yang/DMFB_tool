@@ -1,0 +1,33 @@
+grid 24 24
+
+blockages 5 7 9 4
+blockages 8 23 14 22
+blockages 17 18 21 12
+blockages 21 7 22 6
+blockages 3 18 9 12
+blockages 16 8 18 2
+
+net 1 1 24 21 8
+net 2 1 1 23 4
+net 3 3 1 22 22
+net 4 24 3 2 1
+net 5 3 24 15 3
+net 6 5 1 23 14
+net 7 1 4 19 10
+net 8 1 6 20 1
+net 9 24 6 2 18
+net 10 6 24 18 23
+net 11 8 1 16 12
+net 12 24 8 9 10
+net 13 24 10 2 3
+net 14 1 8 13 21
+net 15 24 12 13 18
+net 16 1 10 12 3
+net 17 10 1 14 11
+net 18 1 12 13 14
+net 19 24 15 2 6
+net 20 24 18 11 19
+net 21 24 20 12 1
+net 22 24 24 23 1
+net 23 1 15 23 19
+net 24 14 1 4 6

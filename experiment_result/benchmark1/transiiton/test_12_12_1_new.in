@@ -1,0 +1,19 @@
+grid 12 12
+
+blockages 2 10 4 8
+blockages 9 5 10 4
+blockages 4 4 5 2
+blockages 9 11 10 10
+
+net 1 1 1 10 6
+net 2 1 12 3 3
+net 3 3 12 7 6
+net 4 3 1 5 11
+net 5 5 12 9 8
+net 6 8 12 5 9
+net 7 8 1 5 7
+net 8 12 4 3 11
+net 9 10 1 1 11
+net 10 12 7 3 5
+net 11 11 12 1 9
+net 12 12 10 2 7

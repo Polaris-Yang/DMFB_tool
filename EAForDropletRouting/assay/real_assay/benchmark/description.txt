@@ -1,0 +1,40 @@
+Benchmark description:
+
+1. We assume that the coordinate of the bottom-left corner of a biochip is (0, 0).
+   Moreover, all droplets are located at their sources at time step zero.
+
+2. ARRAY: W H -> width/height of a biochip
+
+3. TIMECONSTRAINT: timimng constraint, set to 20 for all benchmarks for fair comparison with [Su et al, DATE'06].
+
+4. TIME: T -> max. time of droplet transportation.  Note that T is always TIMECONSTRAINT+1
+
+5. BLOCK block_name 
+   x y rx ry
+   (x y): bottom-left corner, (rx+1, ry+1): up-right corner
+   ex: "1 1 3 3" -> (1, 1) and (4, 4)
+
+6. PIN pin_name
+   x, y
+   (x, y): the coordinate of this pin
+   The last PIN is always sink while other PINs are sources
+
+7. pin_name = W means that this droplet goes to the waste reservoir.
+
+8. The source(s) and sink of a net do not count as the # of cells used for routing.
+   See Figure 8 (c) and the experimental evaluation section of [Su et al, DATE'06] 
+
+9. A droplet can use other droplets' source/sink for routing.
+
+10. Once a droplet reaches its sink, it stays at there.  
+
+11. There may be more than one droplet which needs to go to the waste resrevoir at one 2D plane.
+    Currently, we assume that there exists no fluidic constraint of these two droplets near the 
+    their common sink.  That is, if the waste reservoir located at cell (x, y), there is no 
+    fluidic constraint if these two droplets are within the bounding box of (x-1, y-1) and 
+    (x+1, y+1).  A more realistic way is that a droplet reaches its sink at time t, move to the
+    reservoir at time t+1.  Therefore, at time t+2, this droplet "disappear" from chip.
+    
+
+
+

@@ -1,0 +1,11 @@
+grid 21 21
+
+blockages 6 10 9 7
+blockages 16 10 19 7
+blockages 2 20 5 17
+blockages 7 15 10 12
+blockages 16 19 18 17
+blockages 2 9 4 7
+blockages 16 14 18 12
+
+xet 1 1 17 7 4 # 8 1

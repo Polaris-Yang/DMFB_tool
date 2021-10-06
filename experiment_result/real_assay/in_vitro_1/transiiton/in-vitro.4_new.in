@@ -1,0 +1,8 @@
+grid 16 16
+
+blockages 2 5 7 2
+blockages 10 5 15 2
+blockages 12 15 15 11
+blockages 3 9 5 7
+
+net 1 11 13 11 8
