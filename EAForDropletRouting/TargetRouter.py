@@ -12,8 +12,11 @@ from copy import deepcopy
 
 
 class TargetRouter(Router):
-    def __init__(self, height, width, blockages, droplets, assay):
+    def __init__(self, height, width, blockages, droplets, assay, alpha, beta, gamma):
         super(TargetRouter, self).__init__(height, width, blockages, droplets, assay)
+        self.alpha = alpha
+        self.beta = beta
+        self.gamma = gamma
 
     def router_specific_inits(self):
         for x in range(self.height):
@@ -45,21 +48,14 @@ class TargetRouter(Router):
                     return True, came_from, cost_so_far
 
             for next_cell in self.neighbors(current):
-                # new_cost = cost_so_far[current]
-                # if not self.board[next_cell.x][next_cell.y].is_used:
-                #     new_cost += 1.0
-                # if self.board[next_cell.x][next_cell.y].block_for_source > 0:
-                #     new_cost += self.board[next_cell.x][next_cell.y].block_for_source * 2.0
-                # if self.board[next_cell.x][next_cell.y].block_for_target > 0:
-                #     new_cost += self.board[next_cell.x][next_cell.y].block_for_target * 4.0
 
                 new_cost = 0.0
                 if not self.board[next_cell.x][next_cell.y].is_used:
-                    new_cost = cost_so_far[current] + 1.0
+                    new_cost = cost_so_far[current] + 1.0*self.gamma
                 if self.board[next_cell.x][next_cell.y].block_for_source > 0:
-                    new_cost = cost_so_far[current] + self.board[next_cell.x][next_cell.y].block_for_source * 2.0
+                    new_cost = cost_so_far[current] + self.board[next_cell.x][next_cell.y].block_for_source * self.beta
                 if self.board[next_cell.x][next_cell.y].block_for_target > 0:
-                    new_cost = cost_so_far[current] + self.board[next_cell.x][next_cell.y].block_for_target * 4.0
+                    new_cost = cost_so_far[current] + self.board[next_cell.x][next_cell.y].block_for_target * self.alpha
 
                 if next_cell not in cost_so_far or new_cost < cost_so_far[next_cell]:
                     cost_so_far[next_cell] = new_cost
@@ -146,7 +142,6 @@ class TargetRouter(Router):
             new_droplets[d].true_target = best_target
 
             if new_droplets[d].is_concession and new_droplets[d].concession_cells[-1] == best_target:
-
                 self.add_down_block_for_source_target_helper(best_target, self.ADD_BLOCK_FOR_TARGET, 1)
                 new_droplets[d].is_arrive = True
 
