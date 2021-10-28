@@ -14,7 +14,7 @@ from os import path
 from TargetRouter import TargetRouter
 from Utils import *
 import arguments
-
+from tqdm import tqdm
 
 class SingleObjectiveAlgorithm:
     def __init__(self, problem, pop_size=50, offspring_size=50, mutate_prob=0.5,
@@ -114,14 +114,8 @@ class EliteGeneticAlgorithm(SingleObjectiveAlgorithm):
         self.fittest = self.population[0]
 
     def run(self, generation):
-        """
-        算法运行
-        :param generation:
-        :return:
-        """
-        gen = 0
-        while gen < generation:
-            if gen == 0:
+        for i in tqdm(range(1, generation+1)):
+            if i == 1:
                 self.initialize()
                 self.initial_pop = self.population
             else:
@@ -133,7 +127,6 @@ class EliteGeneticAlgorithm(SingleObjectiveAlgorithm):
                 if pop.objectives[0] != MAX_VALUE:
                     num += 1
             self.feasible_num.append(num)
-            gen += 1
         return self.fittest_in_each_gen, self.feasible_num
 
 
