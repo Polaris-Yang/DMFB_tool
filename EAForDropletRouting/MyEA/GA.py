@@ -15,6 +15,7 @@ from TargetRouter import TargetRouter
 from Utils import *
 import arguments
 from tqdm import tqdm
+from multiprocessing import Pool
 
 
 class SingleObjectiveAlgorithm:
@@ -28,11 +29,14 @@ class SingleObjectiveAlgorithm:
         self.selector = selector
         self.comparator = comparator
 
-    def initialize(self):
+    def initialize(self, parallel=True):
         self.population = [generate(self.problem)
                            for _ in range(0, self.pop_size)]
-        self.evaluate_all(self.population)
-
+        if parallel == True:
+            # run decoding parallel
+            self.evaluate_all_parallel(self.population)
+        else:
+            self.evaluate_all(self.population)
         self.initial_pop = []
         self.fittest_in_each_gen = []
         self.feasible_num = []
@@ -43,6 +47,14 @@ class SingleObjectiveAlgorithm:
         for solution in solutions:
             solution.objectives.append(
                 self.problem.get_time_steps(solution.variables))
+
+    def evaluate_all_parallel(self, solutions):
+        pool_num = len(solutions)
+        permutations = [i.variables for i in solutions]
+        with Pool(12) as p:
+            objs = p.map(self.problem.get_time_steps, permutations)
+        for i in range(pool_num):
+            solutions[i].objectives.append(objs[i])
 
     @abstractmethod
     def iterate(self):
@@ -103,7 +115,7 @@ class EliteGeneticAlgorithm(SingleObjectiveAlgorithm):
             self.population, key=lambda x: x.objectives[0])
         self.fittest = self.population[0]
 
-    def iterate(self):
+    def iterate(self, parallel=True):
         offspring = []
         while len(offspring) < self.offspring_size:
             # parents = random_select(self.population)
@@ -116,8 +128,11 @@ class EliteGeneticAlgorithm(SingleObjectiveAlgorithm):
             offspring2 = Solution(swap_mutate(offspring_vars[1]))
             offspring.append(offspring1)
             offspring.append(offspring2)
-
-        self.evaluate_all(offspring)
+        if parallel == True:
+            # run decoding parallel
+            self.evaluate_all_parallel(offspring)
+        else:
+            self.evaluate_all(offspring)
         offspring.append(self.fittest)
         offspring = sorted(offspring, key=lambda x: x.objectives[0])
         self.population = offspring[:self.pop_size]
