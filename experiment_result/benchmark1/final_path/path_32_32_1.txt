@@ -90,6 +90,4 @@ end
 
 'number_experiments': 30
 'best_result': 75, 'avg':86.86 , 'std': 5.71
-total_run_time：   435016.20
-avg_rumtime：  14500.54
 cell used is : 469
