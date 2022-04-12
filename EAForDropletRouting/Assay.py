@@ -37,10 +37,23 @@ TEST_32_32_PATHS = [
     'assay/test/test_32_32_1.in',
     'assay/test/test_32_32_2.in',
     'assay/test/test_32_32_3.in',
-    'assay/test/test_32_32_4.in'
+    'assay/test/test_32_32_4.in',
+    'assay/test/test_32_32_5.in',
+    'assay/test/test_32_32_6.in',
 ]
 
-test={'12': TEST_12_12_PATHS,'16': TEST_16_16_PATHS,'24': TEST_24_24_PATHS,'32': TEST_32_32_PATHS}
+TEST_48_48_PATHS = [
+    'assay/test/test_48_48_1.in',
+    'assay/test/test_48_48_2.in',
+    'assay/test/test_48_48_3.in',
+    'assay/test/test_48_48_4.in',
+    'assay/test/test_48_48_5.in',
+    'assay/test/test_48_48_6.in',
+    'assay/test/test_48_48_7.in',
+    'assay/test/test_48_48_8.in',
+]
+
+test={'12': TEST_12_12_PATHS,'16': TEST_16_16_PATHS,'24': TEST_24_24_PATHS,'32': TEST_32_32_PATHS,'48': TEST_48_48_PATHS}
 
 MINSIK = [
     'assay/minsik/benchmark_1_minsik',
