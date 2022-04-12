@@ -41,5 +41,5 @@ end
 
 'number_experiments': 30
 'best_result': 29, 'avg': 31.93, 'std': 2.67
-avg_rumtime： 63.34s cell used is90
+cell used is90
 

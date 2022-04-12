@@ -45,6 +45,4 @@ end
 
 'number_experiments': 30
 'best_result': 43, 'avg': 43, 'std': 0
-total_run_time：2884.71
-avg_rumtime：  96.16
 cell used is : 156
